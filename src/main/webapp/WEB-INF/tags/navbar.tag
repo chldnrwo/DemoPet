@@ -64,7 +64,7 @@ padding: 0 15px 0 15px;
 <nav id="nav" class="navbar navbar-expand-md mb-3">
   <div class="container-md">
     <a class="navbar-brand" href="${mainLink }">
-    <span class="font-main">Main</span>
+    <span class="font-main">모이개</span>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -76,7 +76,7 @@ padding: 0 15px 0 15px;
          href="${onLineLink }">
           <span class="font">
           	<div>
-          		Activity
+          		Meeting
           	</div>
           	<div>
           		On/Off
@@ -129,6 +129,13 @@ padding: 0 15px 0 15px;
 	        </li>
 		</c:if>
         
+        <li class="nav-item">
+          <a class="nav-link"
+          href="${qnaLink}">
+          <span class="font">Store</span
+          ></a>
+        </li>
+        
          <li class="nav-item">
           <a class="nav-link"
           href="${qnaLink}">
@@ -136,7 +143,7 @@ padding: 0 15px 0 15px;
           ></a>
         </li>
         
-         <li class="nav-item">
+<%--          <li class="nav-item">
              <sec:authorize access=" not hasAnyAuthority('host','hostRequest')">
           <a class="nav-link"  href="${becomeHostIntro}"> <span class="font">Become Host</span></a>
           </sec:authorize>
@@ -144,7 +151,7 @@ padding: 0 15px 0 15px;
           <a class="nav-link"  href="${hostPage}"> <span class="font">Host Page</span></a>
           </sec:authorize>
           
-        </li>
+        </li> --%>
         
         <sec:authorize access="hasAuthority('admin')">
         <li class="nav-item">
