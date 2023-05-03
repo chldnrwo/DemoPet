@@ -62,7 +62,7 @@ public class MemberController {
 		  
 		  //가입 잘되면 
 		  rttr.addFlashAttribute("message", "회원가입 되었습니다."); 
-		  return "redirect:/jjhLogin/login";
+		  return "redirect:/member/login";
 
 	}
 
