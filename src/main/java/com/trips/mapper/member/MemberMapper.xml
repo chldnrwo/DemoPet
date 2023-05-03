@@ -6,8 +6,8 @@
 <mapper namespace="com.trips.mapper.member.MemberMapper">
 
 	<insert id="insert">
-	INSERT INTO USER(user_id, nickname, password, name, gender, phone, birth, city)
-	VALUES (#{user_id}, #{nickname}, #{password}, #{name}, #{gender}, #{phone}, #{birth}, #{city})
+	INSERT INTO USER(user_id, nickname, password, name, gender, phone, birth, city, location)
+	VALUES (#{user_id}, #{nickname}, #{password}, #{name}, #{gender}, #{phone}, #{birth}, #{city}, #{location})
 	</insert>
 
 	<select id="selectById" resultMap="memberMap">

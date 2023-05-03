@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="my" tagdir="/WEB-INF/tags" %>
+<c:set var="path" value="${ pageContext.request.contextPath }"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,9 +23,8 @@ body {
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
 </head>
-<body>
+<body onload="initialize()">
 	<my:navbar></my:navbar>
 	
 	<div class="container-md">
@@ -40,7 +40,7 @@ body {
 						</label>
 						
 						<div class="input-group">
-							<input id="emailInput1" class="form-control" type="email" name="M_EMAIL">
+							<input id="emailInput1" class="form-control" type="email" name="email">
 							<button id="emailExistButton1" type="button" class="btn btn-outline-secondary">중복확인</button>
 						</div>
 						
@@ -53,7 +53,7 @@ body {
 						</label>
 						
 						<div class="input-group">
-							<input id="nickNameInput1" class="form-control" type="test" name="M_NICKNAME">
+							<input id="nickNameInput1" class="form-control" type="test" name="nickname">
 							<button id="nickNameExistButton1" type="button" class="btn btn-outline-secondary">중복확인</button>
 						</div>
 						
@@ -64,7 +64,7 @@ body {
 						<label for="" class="form-label">
 							암호
 						</label>
-						<input id="passwordInput1" class="form-control" type="password" name="M_PASSWORD">
+						<input id="passwordInput1" class="form-control" type="password" name="password">
 						<div id="passwordText1" class="form-text"></div>
 					</div>
 					
@@ -81,7 +81,7 @@ body {
 						</label>
 						
 						<div class="input-group">
-							<input id="nameInput1" class="form-control" type="text" name="M_NAME">
+							<input id="nameInput1" class="form-control" type="text" name="name">
 						</div>
 					</div>
 										
@@ -90,7 +90,7 @@ body {
 							성별
 						</label>
 								
-						<select class="form-select" aria-label="Default select example" name="M_GENDER">
+						<select class="form-select" aria-label="Default select example" name="gender">
 						  <option selected>선택하세요</option>
 						  <option value="male">남자</option>
 						  <option value="female">여자</option>
@@ -102,7 +102,7 @@ body {
 							전화번호
 						</label>
 						<div class="input-group">
-							<input id="nameInput1" class="form-control" type="text" name="M_PHONE">
+							<input id="nameInput1" class="form-control" type="text" name="phone">
 						</div>
 					</div>
 					
@@ -111,7 +111,7 @@ body {
 							생년월일
 						</label>
 						<div class="input-group">
-							<input type="text" title="생년월일" name="birthDay" id="birthDay" class="datepicker form-control">
+							<input type="text" title="생년월일" name="birth" id="birthDay" class="datepicker form-control">
 						</div>
 					</div>
 					
@@ -119,11 +119,11 @@ body {
 						<label for="" class="form-label">
 							주소
 						</label>
-						<input required="required" type="text" class="form-control" name="address2" id="address2" placeholder="주소찾기 버튼을 통해 입력해주세요">
-						<input required="required" type="text" class="form-control" name="addressLL" id="addressLL" placeholder="주소찾기 버튼을 통해 입력해주세요">
+						<input hidden required="required" type="text" class="form-control" name="address2" id="address2" placeholder="주소찾기 버튼을 통해 입력해주세요">
+						<input hidden required="required" type="text" class="form-control" name="location" id="addressLL" placeholder="주소찾기 버튼을 통해 입력해주세요">
 						<div class="input-group">
 							<input readonly="readonly" required="required" type="text" class="form-control" 
-							name="address" id="address" placeholder="주소찾기 버튼을 통해 입력해주세요">
+							name="city" id="address" placeholder="주소찾기 버튼을 통해 입력해주세요">
 							<button id="addressSubmitButton" type="button" class="btn btn-outline-secondary">주소찾기</button>
 						</div>
 					</div>
@@ -170,28 +170,30 @@ body {
          });
  
     });
-    /*--------------------도로명 주소 입력 기능-------------------------------------------------------------------------------*/
-    const ctx = "${pageContext.request.contextPath}";
-
-    document.querySelector("#addressSubmitButton").addEventListener("click", function() {
-    	
-    	window.open("${path}/member/jusoPopup","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
-    });
-
-
-    function jusoCallBack(roadFullAddr,roadAddrPart1){
-    		// 팝업페이지에서 주소입력한 정보를 받아서, 현 페이지에 정보를 등록합니다.
-    		document.querySelector("#address").value = roadFullAddr;
-    		document.querySelector("#address2").value = roadAddrPart1;
-    		
-    		codeAddress();
-    }
-    /*--------------------도로명 주소 입력 기능 끝-------------------------------------------------------------------------------*/
 </script> 
-<script type="text/javascript"src="http://maps.googleapis.com/maps/api/js?key=${gKey}&sensor=true">	
+<script>
+/*--------------------도로명 주소 입력 기능-------------------------------------------------------------------------------*/
+const ctx = "${pageContext.request.contextPath}";
+
+document.querySelector("#addressSubmitButton").addEventListener("click", function() {
+	
+	window.open("${path}/member/jusoPopup","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
+});
+
+
+function jusoCallBack(roadFullAddr,roadAddrPart1){
+		// 팝업페이지에서 주소입력한 정보를 받아서, 현 페이지에 정보를 등록합니다.
+		document.querySelector("#address").value = roadFullAddr;
+		document.querySelector("#address2").value = roadAddrPart1;
+		
+		codeAddress();
+}
+/*--------------------도로명 주소 입력 기능 끝-------------------------------------------------------------------------------*/
 </script>
+
+<script type="text/javascript"src="http://maps.googleapis.com/maps/api/js?key=${gKey}&sensor=false">	</script>
 <script type="text/javascript">
-/*----------------위도경도 변환 기능------------------------------------------------------------*/
+/*--------------------위도경도 변환 기능-------------------------------------------------------------------------------*/
 	var map;
 	var infowindow = new google.maps.InfoWindow();
 	var marker = [];
@@ -213,7 +215,7 @@ body {
 		map = new google.maps.Map(document.getElementById("map_canvas"),
 				myOptions);
 		geocoder = new google.maps.Geocoder();
-		google.maps.event.addListener(map, 'click', codeCoordinate);
+		/* google.maps.event.addListener(map, 'click', codeCoordinate); */
 		/*아랫글에서 설명한 event를 이용 지도를 'click'하면 codeCoordinate함수를 실행합니다.
 		   codeCoordinate함수는 클릭한 지점의 좌표를 가지고 주소를 찾는 함수입니다. */
 	}
@@ -257,10 +259,9 @@ body {
 			}
 		});
 	}
-/*------------위도 경도 변환 기능 끝-------------------------------------*/
+/*--------------------위도경도 변환 기능 끝-------------------------------------------------------------------------------*/
 </script>
-<div id="map_canvas" style="width: 80%; height: 60%"></div>
-
+<div hidden id="map_canvas" style="width: 80%; height: 60%"></div>
 </body>
 </html>
 

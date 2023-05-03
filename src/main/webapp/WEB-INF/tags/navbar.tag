@@ -42,8 +42,8 @@ padding: 0 15px 0 15px;
 <c:url value="/qna/QnaList" var="qnaLink" />
 <c:url value="/ydsBoard/list" var="onLineLink" />
 <c:url value="/offline/on" var="offLineLink" />
-<c:url value="/jjhLogin/login" var="logInLink" />
-<c:url value="/jjhLogin/signup" var="signUpLink" />
+<c:url value="/member/login" var="logInLink" />
+<c:url value="/member/signup" var="signUpLink" />
 <c:url value="/main" var="mainLink" />
 <c:url value="/jjhLogin/logout" var="logOutLink" />
 

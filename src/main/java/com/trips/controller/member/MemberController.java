@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.trips.domain.jjhMember.jjhMemberDto;
+import com.trips.domain.member.MemberDto;
 import com.trips.service.jjhMember.jjhMemberService;
+import com.trips.service.member.MemberService;
 
 
 @Controller
@@ -22,8 +24,13 @@ import com.trips.service.jjhMember.jjhMemberService;
 public class MemberController {
 
 	@Autowired
-	private jjhMemberService service;
-
+	private MemberService service;
+	
+	@GetMapping("sample")
+	public void sample() {
+		
+	}
+	
 	@GetMapping("jusoPopup")
 	public void jusoPopup() {
 		
@@ -55,14 +62,14 @@ public class MemberController {
 	
 	
 	@PostMapping("signup")
-	public String signup(jjhMemberDto member, RedirectAttributes rttr) {
-			System.out.println(member);
-		  member.setM_HOST(false);
-		  int cnt = service.insert(member);
+	public String signup(MemberDto member, RedirectAttributes rttr) {
+		System.out.println(member);
 		  
-		  //가입 잘되면 
-		  rttr.addFlashAttribute("message", "회원가입 되었습니다."); 
-		  return "redirect:/member/login";
+		int cnt = service.insert(member);
+		  
+		//가입 잘되면 
+		rttr.addFlashAttribute("message", "회원가입 되었습니다."); 
+		return "redirect:/member/login";
 
 	}
 
