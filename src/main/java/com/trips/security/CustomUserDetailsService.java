@@ -14,37 +14,35 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.trips.domain.jjhMember.jjhMemberDto;
+import com.trips.domain.member.MemberDtoAddRole;
 import com.trips.mapper.jjhMember.jjhMemberMapper;
+import com.trips.mapper.member.MemberMapper;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 	
-	
-	
-	@Autowired 
-	private PasswordEncoder passwordEncoder;
+	//@Autowired 
+	private final PasswordEncoder passwordEncoder;
 	 
-	@Autowired
-	private jjhMemberMapper mapper;
+	//@Autowired
+	private final MemberMapper mapper;
 	
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		
-		jjhMemberDto member = mapper.selectById(username);
-		
+		MemberDtoAddRole member = mapper.selectByEmail(email);
 
-		if (member == null) {
-			return null;
-		}
+		if (member == null)	return null;
 		
 		List<SimpleGrantedAuthority> list = new ArrayList<>();
-		if(member.getM_AUTHORITY()!=null) {
-			list.add(new SimpleGrantedAuthority(member.getM_AUTHORITY()));
-		}
-			
-		User user = new User(member.getM_ID(), member.getM_PASSWORD(),list);
+		if(member.getUser_role()!=null) {
+			list.add(new SimpleGrantedAuthority(member.getUser_role()));
+		}	
+		User user = new User(member.getEmail(), member.getPassword(),list);
 		 
 		return user;
 	}

@@ -5,7 +5,7 @@ import java.sql.Date;
 import lombok.Data;
 
 @Data
-public class MemberDto {
+public class MemberDtoAddRole {
 	private String email;
 	private String nickname;
 	private String password;
@@ -15,4 +15,5 @@ public class MemberDto {
 	private Date birth;
 	private String city;
 	private String location;
+	private String user_role;
 }

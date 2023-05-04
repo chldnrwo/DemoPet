@@ -22,6 +22,9 @@ public class MainController {
 		model.addAttribute("mainList", main);
 		System.out.println(model);
 	}
-	
+	@GetMapping("main2")
+	public void getMain2() {
+		
+	}
 	
 }

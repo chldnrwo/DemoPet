@@ -60,13 +60,13 @@ public class CustomConfig {
 	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-		http.formLogin().loginPage("/jjhLogin/login").defaultSuccessUrl("/main", true);
 		
-		http.logout().logoutUrl("/jjhLogin/logout");
+		http.formLogin().loginPage("/member/login").defaultSuccessUrl("/main2", true);
+		
+		http.logout().logoutUrl("/member/logout");
 		http.csrf().disable();
 		// 접근권한 excepiton시 해당 경로로 리턴
-		http.exceptionHandling().accessDeniedPage("/jjhLogin/accessDenied");
+		http.exceptionHandling().accessDeniedPage("/member/accessDenied");
 		return http.build();
 	}
 	

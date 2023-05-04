@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.trips.domain.member.MemberDto;
+import com.trips.domain.member.MemberDtoAddRole;
 import com.trips.mapper.member.MemberMapper;
 
 
@@ -19,22 +20,22 @@ public class MemberService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	
 	public int insert(MemberDto member) {
 		
 		String pw = member.getPassword();
-		
 		member.setPassword(passwordEncoder.encode(pw));
-		
+		System.out.println("service : "+member);
 		return memberMapper.insert(member);
 	}
 	
-	public MemberDto getById(String id) {
-		// TODO Auto-generated method stub
-		return memberMapper.selectById(id);
-	}
-	
-	public MemberDto getByEmail(String email) {
+	public MemberDtoAddRole getByEmail(String email) {
 		// TODO Auto-generated method stub
 		return memberMapper.selectByEmail(email);
+	}
+
+	public MemberDtoAddRole getByNickName(String nickName) {
+		// TODO Auto-generated method stub
+		return memberMapper.selectByNickName(nickName);
 	}
 }

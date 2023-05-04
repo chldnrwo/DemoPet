@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.trips.domain.jjhMember.jjhMemberDto;
 import com.trips.domain.member.MemberDto;
+import com.trips.domain.member.MemberDtoAddRole;
 import com.trips.service.jjhMember.jjhMemberService;
 import com.trips.service.member.MemberService;
 
@@ -50,10 +51,6 @@ public class MemberController {
 
 	}
 	
-	@GetMapping("loginLegacy")
-	public void loginL() {
-
-	}	
 	
 	@GetMapping("signup")
 	public void signup() {
@@ -72,26 +69,6 @@ public class MemberController {
 		return "redirect:/member/login";
 
 	}
-
-	
-	// 아이디 중복 확인
-	@GetMapping("existId/{id}")
-	@ResponseBody
-	public Map<String, Object> existId(@PathVariable String id) {
-		Map<String, Object> map = new HashMap<>();
-		System.out.println(id);
-		jjhMemberDto member = service.getById(id);
-
-		if (member == null) {
-			map.put("status", "not exist");
-			map.put("message", "사용가능한 아이디입니다.");
-		} else {
-			map.put("status", "exist");
-			map.put("message", "이미 존재하는 아이디입니다.");
-		}
-
-		return map;
-	}
 	
 	// 이메일 중복 확인
 	@PostMapping("existEmail")
@@ -100,7 +77,7 @@ public class MemberController {
 
 		Map<String, Object> map = new HashMap<>();
 
-		jjhMemberDto member = service.getByEmail(req.get("email"));
+		MemberDtoAddRole member = service.getByEmail(req.get("email"));
 
 		if (member == null) {
 			map.put("status", "not exist");
@@ -112,6 +89,27 @@ public class MemberController {
 
 		return map;
 	}
+	@PostMapping("existNickName")
+	@ResponseBody
+	public Map<String, Object> existNickName(@RequestBody Map<String, String> req) {
+
+		Map<String, Object> map = new HashMap<>();
+
+		MemberDtoAddRole member = service.getByNickName(req.get("nickName"));
+		System.out.println(req.get("nickName"));
+		System.out.println(member);
+		
+		if (member == null) {
+			map.put("status", "not exist");
+			map.put("message", "사용가능한 닉네임입니다.");
+		} else {
+			map.put("status", "exist");
+			map.put("message", "이미 존재하는 닉네임입니다.");
+		}
+
+		return map;
+	}
+	
 	@GetMapping("accessDenied")
 	public void accesDenied() {
 		

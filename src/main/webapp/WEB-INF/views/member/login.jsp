@@ -73,7 +73,7 @@ body {
 					<div class="myform form ">
 						<div class="logo mb-3" id="padding">
 							<div class="col-md-12 text-center">
-								<h1 class="font_pala">ACTI &nbsp; Login</h1>
+								<h1 class="font_pala">모이개 &nbsp; Login</h1>
 							</div>
 						</div>
 						<form action="" method="post" name="login">
@@ -81,7 +81,7 @@ body {
 								<label for="inputID" class="font_pala" style="padding: 10px 0 10px 0; font-size: 25px;">Id</label> 
 								<input type="text"
 									name="username" class="form-control" id="id"
-									aria-describedby="idHelp" placeholder="Enter id">
+									aria-describedby="idHelp" placeholder="Enter E-mail">
 							</div>
 							<div class="form-group">
 								<label for="inputPassword" class="font_pala" style="padding: 10px 0 10px 0; font-size: 25px;">Password</label> 
@@ -97,7 +97,7 @@ body {
 
 							<div class="form-group">
 								<p class="text-center">
-									계정이 없으신가요? <a href="${path}/jjhLogin/signup" id="signup">가입하기</a>
+									계정이 없으신가요? <a href="${path}/member/signup" id="signup">가입하기</a>
 								</p>
 							</div>
 						</form>

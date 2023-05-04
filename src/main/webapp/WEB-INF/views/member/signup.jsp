@@ -53,7 +53,7 @@ body {
 						</label>
 						
 						<div class="input-group">
-							<input id="nickNameInput1" class="form-control" type="test" name="nickname">
+							<input id="nickNameInput1" class="form-control" type="text" name="nickname">
 							<button id="nickNameExistButton1" type="button" class="btn btn-outline-secondary">중복확인</button>
 						</div>
 						
@@ -81,7 +81,7 @@ body {
 						</label>
 						
 						<div class="input-group">
-							<input id="nameInput1" class="form-control" type="text" name="name">
+							<input id="nameInput1" class="form-control" type="text" name="user_name">
 						</div>
 					</div>
 										
@@ -129,7 +129,7 @@ body {
 					</div>
 			
 					
-					<input id="submitButton1" class="btn btn-primary" type="submit" value="가입">
+					<input disabled id="submitButton1" class="btn btn-primary" type="submit" value="가입">
 				
 				</form>
 			</div>
@@ -262,6 +262,111 @@ function jusoCallBack(roadFullAddr,roadAddrPart1){
 /*--------------------위도경도 변환 기능 끝-------------------------------------------------------------------------------*/
 </script>
 <div hidden id="map_canvas" style="width: 80%; height: 60%"></div>
+
+<script>
+// 닉네임 사용 가능
+let availableNickName = false;
+// 이메일 사용 가능
+let availableEmail = false;
+// 패스워드 사용 가능
+let availablePassword = false;
+
+function enableSubmitButton() {
+	const button = document.querySelector("#submitButton1");
+	if (availableNickName && availableEmail && availablePassword) {
+		button.removeAttribute("disabled")
+	} else {
+		button.setAttribute("disabled", "");
+	}
+}
+
+//닉네임 input 변경시 submit 버튼 비활성화
+document.querySelector("#nickNameInput1").addEventListener("keyup", function() {
+	availableId = false;
+	enableSubmitButton();
+});
+
+// 이메일 input 변경시 submit 버튼 비활성화
+document.querySelector("#emailInput1").addEventListener("keyup", function() {
+	availableEmail = false;
+	enableSubmitButton();
+});
+
+// 닉네임 중복확인
+document.querySelector("#nickNameExistButton1").addEventListener("click", function() {
+	availableNickName = false;
+	const nickName = document.querySelector("#nickNameInput1").value;
+	
+	fetch(`\${ctx}/member/existNickName`, {
+		method : "post",
+		headers : {
+			"Content-Type" : "application/json"
+		},
+		body : JSON.stringify({nickName})
+	})
+		.then(res => res.json())
+		.then(data => {
+			document.querySelector("#nickNameText1").innerText = data.message;
+			
+			if (data.status == "not exist") {
+				availableNickName = true;
+				enableSubmitButton();
+			}
+		});
+});
+
+// 이메일 중복확인
+document.querySelector("#emailExistButton1").addEventListener("click", function() {
+	availableEmail = false;
+	const email = document.querySelector("#emailInput1").value;
+	
+	fetch(`\${ctx}/member/existEmail`, {
+		method : "post",
+		headers : {
+			"Content-Type" : "application/json"
+		},
+		body : JSON.stringify({email})
+	})
+		.then(res => res.json())
+		.then(data => {
+			document.querySelector("#emailText1").innerText = data.message;
+			
+			if (data.status == "not exist") {
+				availableEmail = true;
+				enableSubmitButton();
+			}
+		});
+});
+
+
+
+
+/* 패스워드 일치하는 지 확인 시작 */
+const passwordInput1 = document.querySelector("#passwordInput1");
+const passwordInput2 = document.querySelector("#passwordInput2");
+const passwordText1 = document.querySelector("#passwordText1");
+ 
+function matchPassword() {
+	availablePassword = false;
+	
+	const value1 = passwordInput1.value;
+	const value2 = passwordInput2.value;
+	
+	if (value1 == value2) {
+		passwordText1.innerText = "패스워드가 일치합니다.";
+		availablePassword = true;
+	} else {
+		passwordText1.innerText = "패스워드가 일치하지 않습니다.";
+	}
+	
+	enableSubmitButton();
+
+}
+
+passwordInput1.addEventListener("keyup", matchPassword);
+passwordInput2.addEventListener("keyup", matchPassword);
+/* 패스워드 일치하는 지 확인 끝 */
+</script>
 </body>
 </html>
 
