@@ -30,7 +30,7 @@ body {
 	<div class="container-md">
 		<div class="row">
 			<div class="col">
-				<h1 style="margin-top: 20px">회원가입</h1>
+				<h1 style="margin-top: 20px">회원정보 수정</h1>
 				
 				<form action="" method="post">
 					

@@ -13,9 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.trips.domain.jjhMember.jjhMemberDto;
 import com.trips.domain.member.MemberDtoAddRole;
-import com.trips.mapper.jjhMember.jjhMemberMapper;
 import com.trips.mapper.member.MemberMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -43,7 +41,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 			list.add(new SimpleGrantedAuthority(member.getUser_role()));
 		}	
 		User user = new User(member.getEmail(), member.getPassword(),list);
-		 
+		System.out.println(user); 
 		return user;
 	}
 

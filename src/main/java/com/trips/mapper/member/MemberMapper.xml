@@ -22,7 +22,9 @@
 		birth, 
 		city, 
 		location,
-		user_role
+		user_role,
+		self_introduction,
+		user_profile
 	FROM
 		USER
 	WHERE
@@ -41,10 +43,37 @@
 		birth, 
 		city, 
 		location,
-		user_role
+		user_role,
+		self_introduction,
+		user_profile
 	FROM
 		USER
 	WHERE
 		nickname = #{nickName}
+	</select>
+	
+	<update id="deleteById">
+	UPDATE USER
+	SET
+		disable = false
+	WHERE
+		user_id = #{id}
+	</update>
+	
+	<select id="getPetListById" resultType="com.trips.domain.member.PetDto">
+	SELECT
+		pet_id,
+		user_id,
+		birth,
+		breed,
+		name,
+		neutering,
+		pet_gender,
+		size_type,
+		pet_profile
+	FROM
+		PET
+	WHERE
+		user_id = #{user_id}
 	</select>
 </mapper>

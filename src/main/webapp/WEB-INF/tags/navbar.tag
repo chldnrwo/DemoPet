@@ -38,14 +38,14 @@ padding: 0 15px 0 15px;
 </style>
 
 
-<c:url value="/mypage/mypage2" var="myPageLink" />
+<c:url value="/member/mypage" var="myPageLink" />
 <c:url value="/qna/QnaList" var="qnaLink" />
 <c:url value="/ydsBoard/list" var="onLineLink" />
 <c:url value="/offline/on" var="offLineLink" />
 <c:url value="/member/login" var="logInLink" />
 <c:url value="/member/signup" var="signUpLink" />
 <c:url value="/main" var="mainLink" />
-<c:url value="/jjhLogin/logout" var="logOutLink" />
+<c:url value="/member/logout" var="logOutLink" />
 
 <c:url value="/host/hostPage" var="hostPage" />
 <c:url value="/host/becomeHostIntro" var="becomeHostIntro" />

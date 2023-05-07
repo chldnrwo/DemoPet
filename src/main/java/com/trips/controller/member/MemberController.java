@@ -1,10 +1,17 @@
 package com.trips.controller.member;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,10 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.trips.domain.jjhMember.jjhMemberDto;
 import com.trips.domain.member.MemberDto;
 import com.trips.domain.member.MemberDtoAddRole;
-import com.trips.service.jjhMember.jjhMemberService;
+import com.trips.domain.member.PetDto;
 import com.trips.service.member.MemberService;
 
 
@@ -26,6 +32,46 @@ public class MemberController {
 
 	@Autowired
 	private MemberService service;
+	
+	@GetMapping("update")
+	public void update() {
+		
+	}
+	
+	@PostMapping("update")
+	public String update(MemberDto member, RedirectAttributes rttr) {
+		System.out.println(member);
+		  
+		int cnt = service.insert(member);
+		  
+		//가입 잘되면 
+		rttr.addFlashAttribute("message", "회원가입 되었습니다."); 
+		return "redirect:/member/login";
+
+	}
+	
+	@PostMapping("remove")
+	public String remove(String id, 
+			HttpServletRequest request)
+			throws Exception {
+		System.out.println(id);
+		int cnt = service.remove(id);
+		request.logout();
+
+		return "redirect:/main2";
+	}
+	
+	@GetMapping("mypage")
+	public void mypage(
+			@AuthenticationPrincipal User user,
+			Model model
+			) {
+		MemberDtoAddRole m = service.getByEmail(user.getUsername());
+		List<PetDto> pet = service.getPetListById(m.getUser_id());
+		
+		model.addAttribute("member", m);
+		model.addAttribute("pet", pet);
+	}
 	
 	@GetMapping("sample")
 	public void sample() {
