@@ -33,20 +33,30 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 	
-	@GetMapping("update")
-	public void update() {
+	@GetMapping("profile")
+	public void profile(
+			@AuthenticationPrincipal User user,
+			Model model
+			) {
 		
 	}
 	
+	@GetMapping("update")
+	public void update(
+			@AuthenticationPrincipal User user,
+			Model model
+			) {
+		MemberDtoAddRole m = service.getByEmail(user.getUsername());
+		model.addAttribute("member", m);
+	}
+	
 	@PostMapping("update")
-	public String update(MemberDto member, RedirectAttributes rttr) {
-		System.out.println(member);
-		  
-		int cnt = service.insert(member);
-		  
+	public String update(MemberDtoAddRole member, RedirectAttributes rttr) {
+		int cnt = service.update(member);
+		System.out.println(cnt);
 		//가입 잘되면 
 		rttr.addFlashAttribute("message", "회원가입 되었습니다."); 
-		return "redirect:/member/login";
+		return "redirect:/main2";
 
 	}
 	
@@ -71,6 +81,7 @@ public class MemberController {
 		
 		model.addAttribute("member", m);
 		model.addAttribute("pet", pet);
+		
 	}
 	
 	@GetMapping("sample")
@@ -155,6 +166,30 @@ public class MemberController {
 
 		return map;
 	}
+	@PostMapping("existNickName2")
+	@ResponseBody
+	public Map<String, Object> existNickName2(@RequestBody Map<String, String> req) {
+
+		Map<String, Object> map = new HashMap<>();
+
+		MemberDtoAddRole member = service.getByNickName(req.get("nickName"));
+		System.out.println(req.get("nickName"));
+		System.out.println(member);
+		
+		if (member == null) {
+			map.put("status", "not exist");
+			map.put("message", "사용가능한 닉네임입니다.");
+		} else if(req.get("nickName").equals(member.getNickname())) {
+			map.put("status", "not exist");
+			map.put("message", "기존 닉네임으로 사용가능합니다.");
+		} else {
+			map.put("status", "exist");
+			map.put("message", "이미 존재하는 닉네임입니다.");
+		}
+
+		return map;
+	}
+	
 	
 	@GetMapping("accessDenied")
 	public void accesDenied() {

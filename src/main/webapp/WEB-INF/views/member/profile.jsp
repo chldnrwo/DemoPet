@@ -104,113 +104,33 @@ body {
 
 	<div class="container-md"
 		style="border-left: solid #d2d2d2; border-right: solid #d2d2d2;max-width: 800px;">
-
+		
 		<strong
-			style="padding: 80px 0 43px 0; display: block; font-size: 30px;">${member.nickname }님의
-			마이 페이지</strong>
+		style="padding: 80px 0 43px 0; display: block; font-size: 30px;">${member.nickname }님의
+		프로필 등록</strong>
 		<div class="row">
-			
 			<div class="col-md-10">
 				<div class="mb-3">
-					<div class="container" style="border: 1px solid #d2d2d2; min-height: 320px;">
-						<div class="item">
-							<div style="padding: 60px 0px 0px 0px;">
-								<c:if test="${member.user_profile eq null }">
+					<div class="container" style="border: 1px solid #d2d2d2;min-height: 320px;max-width:320px;">
+						<div class="container justify-content-center container-dotted" style="margin: 10px 0 10px 0;">
+							<div class="item">
+								<div style="padding: 60px 0px 0px 0px;">
 									<img style="width: 128px; height: 128px; border-radius: 100%;"
-										src="${imgUrl }/mypage/ico_21.png">
-								</c:if>
-								<c:if test="${member.user_profile ne null }">
-									<img style="width: 128px; height: 128px; border-radius: 100%;"
-										src="${imgUrl }/mypage/${member.user_id}/${member.user_profile}">
-								</c:if>
-							</div>
-						</div>
-						
-						<div class="item" style="margin-left: 3rem;">
-							<div style="min-height: 20px"></div>
-							<div class="fontP" style="margin-bottom: 1rem;">
-							Email : <span style="font-size: 20px;">${member.email}</span>
-							</div>
-							<div class="fontP" style="margin-bottom: 1rem;">
-							Nickname : <span style="font-size: 20px;">${member.nickname}</span>
-							</div>
-							<div class="fontP" style="margin-bottom: 1rem;">
-							Address : <span style="font-size: 15px;">${member.city}</span>
-							</div>
-							<div class="fontP" style="min-height: 160px">
-							Introduction : <br>
-								<c:if test="${member.self_introduction eq null }">
-									내 정보 수정을 통해 자기소개를 등록해주세요	
-								</c:if>
-								<c:if test="${member.self_introduction ne null }">
-									<div>
-									${member.self_introduction}
-									</div>	
-								</c:if>
-							</div>
-						</div>
-					</div>
-					<br> <br>
-					
-					<h3 style="font-weight: bold;">나의 반려견</h3>
-					<c:if test="${empty pet}">
-						<div class="container" style="border: 1px solid #d2d2d2;min-height: 320px;">
-							<div class="container justify-content-center container-dotted" style="margin: 10px 0 10px 0;">
-								<div class="item">
-									<div style="padding: 60px 0px 0px 0px;">
-										<img style="width: 128px; height: 128px; border-radius: 100%;"
-										src="${imgUrl }/mypage/dog.jpg">
-									</div>
-									<div>
-										강아지 정보를 등록해주세요
-									</div>
+									src="${imgUrl }/mypage/dog.jpg">
+								</div>
+								<div>
+									프로필 사진을 등록해주세요
 								</div>
 							</div>
 						</div>
-					</c:if>
-					<c:forEach var="petInfo" items="${pet}">
-				        <div class="container" style="border: 1px solid #d2d2d2;min-height: 320px;">
-								<c:if test="${petInfo.pet_profile eq null }">
-									<div class="item">
-										<div style="padding: 60px 0px 0px 0px;">
-											<img style="width: 128px; height: 128px; border-radius: 100%;"
-											src="${imgUrl}/mypage/dog.jpg">
-										</div>
-									</div>
-								</c:if>
-								<c:if test="${petInfo.pet_profile ne null }">
-									<div class="item">
-										<div style="padding: 60px 0px 0px 0px;">
-											<img style="width: 128px; height: 128px; border-radius: 100%;"
-											src="${imgUrl}/mypage/${member.user_id}/${petInfo.pet_profile}">
-										</div>
-									</div>
-								</c:if>
-								<div class="item" style="margin-left: 3rem;">
-										<div style="min-height: 20px"></div>
-										<div class="fontP" style="margin-bottom: 1rem;">
-										Name : <span style="font-size: 20px;">${petInfo.name}</span>
-										</div>
-										<div class="fontP" style="margin-bottom: 1rem;">
-										Age : <span style="font-size: 20px;">${petInfo.age}</span>
-										</div>
-										<div class="fontP" style="margin-bottom: 1rem;">
-										Breed : <span style="font-size: 20px;">${petInfo.breed}</span> 
-										</div>
-										<div class="fontP" style="margin-bottom: 1rem;">
-										Gender : <span style="font-size: 20px;">${petInfo.pet_gender}</span>
-										</div>
-										<div class="fontP" style="margin-bottom: 1rem;">
-										Neutering : <span style="font-size: 20px;">${petInfo.neutering}</span>
-										</div>
-										<div class="fontP" style="margin-bottom: 1rem;">
-										Size : <span style="font-size: 20px;">${petInfo.size_type}</span>
-										</div>
-									</div>
-							
-						</div>
-				    </c:forEach>
+					</div>
 					
+					<br>
+				
+					<div class="container" style="border: 1px solid #d2d2d2; min-height: 320px;">
+						자기소개를 입력해주세요
+					</div>
+					<br>
 					<br>
 					<button id="reservation" type="button" class="btn btn-outline-dark"
 							style="width: 130px;margin-right: 3rem;"
@@ -221,14 +141,7 @@ body {
 					<button id="reservation" type="button" class="btn btn-outline-dark"
 						style="width: 130px;">강아지 등록</button>
 					
-					<br><br>					
-					<button id="reservation" type="button" class="btn btn-outline-dark mr-3"
-						style="width: 130px;margin-right: 3rem;"
-						onclick="location.href='${path}/payment/cart'">장바구니</button>
-
-					<input class="btn btn-danger" type="submit" value="회원탈퇴"
-						data-bs-toggle="modal" data-bs-target="#removeModal"
-						style="width: 130px;">
+				
 				</div>
 			</div>
 			<div class="col-md-2"></div>

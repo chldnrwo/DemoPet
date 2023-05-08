@@ -15,4 +15,5 @@ public class PetDto {
 	private String pet_gender;
 	private String size_type;
 	private String pet_profile;
+	private int age;
 }

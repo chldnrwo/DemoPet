@@ -17,4 +17,6 @@ public interface MemberMapper {
 	int deleteById(String id);
 
 	List<PetDto> getPetListById(Long user_id);
+
+	int update(MemberDtoAddRole member);
 }

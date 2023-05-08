@@ -33,18 +33,16 @@ body {
 				<h1 style="margin-top: 20px">회원정보 수정</h1>
 				
 				<form action="" method="post">
-					
+					<input hidden type="text" name="user_id" value="${member.user_id}"/>
 					<div class="mb-3">
 						<label for="" class="form-label">
 							이메일
-						</label>
-						
-						<div class="input-group">
-							<input id="emailInput1" class="form-control" type="email" name="email">
-							<button id="emailExistButton1" type="button" class="btn btn-outline-secondary">중복확인</button>
-						</div>
-						
-						<div id="emailText1" class="form-text">이메일 중복확인을 해주세요.</div>
+						</label> <br>
+						<div style="font-size: 20px;">
+							${member.email}
+						</div>	
+					
+					
 					</div>
 					
 					<div class="mb-3">
@@ -53,11 +51,11 @@ body {
 						</label>
 						
 						<div class="input-group">
-							<input id="nickNameInput1" class="form-control" type="text" name="nickname">
+							<input id="nickNameInput1" class="form-control" type="text" name="nickname" value="${member.nickname}">
 							<button id="nickNameExistButton1" type="button" class="btn btn-outline-secondary">중복확인</button>
 						</div>
 						
-						<div id="nickNameText1" class="form-text">닉네임 중복확인을 해주세요.</div>
+						<div id="nickNameText1" class="form-text">중복확인을 눌러주세요.</div>
 					</div>
 					
 					<div class="mb-3">
@@ -81,7 +79,7 @@ body {
 						</label>
 						
 						<div class="input-group">
-							<input id="name" class="form-control" type="text" name="user_name">
+							<input id="name" class="form-control" type="text" name="user_name" value="${member.user_name}">
 						</div>
 					</div>
 										
@@ -91,9 +89,17 @@ body {
 						</label>
 								
 						<select class="form-select" aria-label="Default select example" name="gender" id="gender">
-						  <option selected>선택하세요</option>
-						  <option value="male">남자</option>
-						  <option value="female">여자</option>
+						  
+						<c:if test="${member.gender eq 'male'}">
+							<option>선택하세요</option>
+							<option selected value="male">남자</option>
+							<option value="female">여자</option>
+						</c:if>
+						<c:if test="${member.gender ne 'male'}">
+							<option>선택하세요</option>
+							<option value="male">남자</option>
+							<option selected value="female">여자</option>
+						</c:if>
 						</select>            
 	                </div>
 					
@@ -102,7 +108,7 @@ body {
 							전화번호
 						</label>
 						<div class="input-group">
-							<input id="phone" class="form-control" type="text" name="phone">
+							<input id="phone" class="form-control" type="text" name="phone" value="${member.phone}">
 						</div>
 					</div>
 					
@@ -111,7 +117,7 @@ body {
 							생년월일
 						</label>
 						<div class="input-group">
-							<input type="text" title="생년월일" name="birth" id="birthDay" class="datepicker form-control">
+							<input type="text" title="생년월일" name="birth" id="birthDay" class="datepicker form-control" value="${member.birth}">
 						</div>
 					</div>
 					
@@ -119,17 +125,16 @@ body {
 						<label for="" class="form-label">
 							주소
 						</label>
-						<input hidden required="required" type="text" class="form-control" name="address2" id="address2" placeholder="주소찾기 버튼을 통해 입력해주세요">
-						<input hidden required="required" type="text" class="form-control" name="location" id="addressLL" placeholder="주소찾기 버튼을 통해 입력해주세요">
+						<input hidden required="required" type="text" class="form-control" name="location" id="addressLL" value='${member.location}'>
 						<div class="input-group">
 							<input readonly="readonly" required="required" type="text" class="form-control" 
-							name="city" id="address" placeholder="주소찾기 버튼을 통해 입력해주세요">
+							name="city" id="address" value="${member.city}">
 							<button id="addressSubmitButton" type="button" class="btn btn-outline-secondary">주소찾기</button>
 						</div>
 					</div>
 			
 					
-					<input disabled id="submitButton1" class="btn btn-primary" type="submit" value="가입">
+					<input disabled id="submitButton1" class="btn btn-primary" type="submit" value="수정">
 				
 				</form>
 			</div>
@@ -270,7 +275,8 @@ const gender = document.getElementById("gender");
 const phone = document.getElementById("phone");
 const birthDay = document.getElementById("birthDay");
 const address = document.getElementById("address");
-
+const password = document.getElementById("passwordInput1");
+const password2 = document.getElementById("passwordInput2");
 function checkForm() {
 	const button = document.querySelector("#submitButton1");
 	  // 모든 입력 필드가 비어 있지 않은지 확인합니다.
@@ -279,7 +285,8 @@ function checkForm() {
 	    gender.value.trim() !== "" &&
 	    phone.value.trim() !== "" &&
 	    birthDay.value.trim() !== "" &&
-	    address.value.trim() !== ""
+	    address.value.trim() !== "" &&
+	    enableSubmitButton()
 	  ) {
 	    button.disabled = false; // 모든 입력 필드가 채워져 있는 경우 버튼 활성화
 	  } else {
@@ -293,20 +300,22 @@ function checkForm() {
 	phone.addEventListener("input", checkForm);
 	birthDay.addEventListener("input", checkForm);
 	address.addEventListener("input", checkForm);
-
+	password.addEventListener("input", checkForm);
+	password2.addEventListener("input", checkForm);
+	
 // 닉네임 사용 가능
 let availableNickName = false;
-// 이메일 사용 가능
-let availableEmail = false;
 // 패스워드 사용 가능
 let availablePassword = false;
 
 function enableSubmitButton() {
 	const button = document.querySelector("#submitButton1");
-	if (availableNickName && availableEmail && availablePassword) {
+	if (availableNickName && availablePassword) {
 		button.removeAttribute("disabled")
+		return true;
 	} else {
 		button.setAttribute("disabled", "");
+		return false;
 	}
 }
 
@@ -317,18 +326,12 @@ document.querySelector("#nickNameInput1").addEventListener("keyup", function() {
 	enableSubmitButton();
 });
 
-// 이메일 input 변경시 submit 버튼 비활성화
-document.querySelector("#emailInput1").addEventListener("keyup", function() {
-	availableEmail = false;
-	enableSubmitButton();
-});
-
 // 닉네임 중복확인
 document.querySelector("#nickNameExistButton1").addEventListener("click", function() {
 	availableNickName = false;
 	const nickName = document.querySelector("#nickNameInput1").value;
 	
-	fetch(`\${ctx}/member/existNickName`, {
+	fetch(`\${ctx}/member/existNickName2`, {
 		method : "post",
 		headers : {
 			"Content-Type" : "application/json"
@@ -345,31 +348,6 @@ document.querySelector("#nickNameExistButton1").addEventListener("click", functi
 			}
 		});
 });
-
-// 이메일 중복확인
-document.querySelector("#emailExistButton1").addEventListener("click", function() {
-	availableEmail = false;
-	const email = document.querySelector("#emailInput1").value;
-	
-	fetch(`\${ctx}/member/existEmail`, {
-		method : "post",
-		headers : {
-			"Content-Type" : "application/json"
-		},
-		body : JSON.stringify({email})
-	})
-		.then(res => res.json())
-		.then(data => {
-			document.querySelector("#emailText1").innerText = data.message;
-			
-			if (data.status == "not exist") {
-				availableEmail = true;
-				enableSubmitButton();
-			}
-		});
-});
-
-
 
 
 /* 패스워드 일치하는 지 확인 시작 */
@@ -388,6 +366,7 @@ function matchPassword() {
 		availablePassword = true;
 	} else {
 		passwordText1.innerText = "패스워드가 일치하지 않습니다.";
+		availablePassword = false;
 	}
 	
 	enableSubmitButton();
@@ -397,6 +376,7 @@ function matchPassword() {
 passwordInput1.addEventListener("keyup", matchPassword);
 passwordInput2.addEventListener("keyup", matchPassword);
 /* 패스워드 일치하는 지 확인 끝 */
+
 </script>
 </body>
 </html>
