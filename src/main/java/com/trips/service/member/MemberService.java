@@ -7,14 +7,22 @@ import java.time.ZoneId;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.trips.domain.member.MemberDto;
 import com.trips.domain.member.MemberDtoAddRole;
 import com.trips.domain.member.PetDto;
 import com.trips.mapper.member.MemberMapper;
+
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 
 @Service
@@ -27,6 +35,11 @@ public class MemberService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	@Autowired
+	private S3Client s3Client;
+
+	@Value("${aws.s3.bucket}")
+	private String bucketName;
 	
 	
 	public int insert(MemberDto member) {
@@ -71,5 +84,45 @@ public class MemberService {
 		member.setPassword(passwordEncoder.encode(pw));
 		
 		return memberMapper.update(member);
+	}
+	private void uploadFile(MultipartFile file, String folder) {
+		try {
+			// S3에 파일 저장
+			// 키 생성
+			String key = folder + file.getOriginalFilename();
+
+			// putObjectRequest
+			PutObjectRequest putObjectRequest = PutObjectRequest.builder().bucket(bucketName).key(key)
+					.acl(ObjectCannedACL.PUBLIC_READ).build();
+
+			// requestBody
+			RequestBody requestBody = RequestBody.fromInputStream(file.getInputStream(), file.getSize());
+
+			// object(파일) 올리기
+			s3Client.putObject(putObjectRequest, requestBody);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public int updateProfile(MemberDtoAddRole member, MultipartFile file, String legacyFileName) {
+		System.out.println(member.getUser_id());
+		if (file != null && file.getSize() > 0) {
+			member.setUser_profile(file.getOriginalFilename());
+			uploadFile(file, "moigae/mypage/"+member.getUser_id()+ "/");
+		}
+		deleteFile(member.getUser_id(), legacyFileName);
+		return memberMapper.updateProfile(member);
+	}
+	
+	private void deleteFile(Long id, String fileName) {
+		String key = "moigae/mypage/" + id + "/" + fileName;
+		DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+				.bucket(bucketName)
+				.key(key)
+				.build();
+		s3Client.deleteObject(deleteObjectRequest);
 	}
 }

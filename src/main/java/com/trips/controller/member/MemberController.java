@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.trips.domain.member.MemberDto;
@@ -33,13 +34,24 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 	
+	@PostMapping("profile")
+	public String profile2(
+			MemberDtoAddRole member,
+			MultipartFile file,
+			RedirectAttributes rttr
+			) {
+		//버킷에 있는 기존 이미지 삭제
+		//새로운 이미지 업데이트
+		int cnt = service.updateProfile(member, file, member.getUser_profile());
+		return "redirect:/member/profile";
+	}
+	
 	@GetMapping("profile")
 	public void profile(
 			@AuthenticationPrincipal User user,
 			Model model
 			) {
 		MemberDtoAddRole m = service.getByEmail(user.getUsername());
-		System.out.println(m);
 		model.addAttribute("member", m);
 	}
 	
@@ -58,7 +70,7 @@ public class MemberController {
 		System.out.println(cnt);
 		//가입 잘되면 
 		rttr.addFlashAttribute("message", "회원가입 되었습니다."); 
-		return "redirect:/main2";
+		return "redirect:/member/mypage";
 
 	}
 	

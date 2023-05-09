@@ -91,4 +91,13 @@
 		WHERE
 			user_id = #{user_id}
 	</update>
+	
+	<update id="updateProfile" parameterType="com.trips.domain.member.MemberDtoAddRole">
+		UPDATE USER
+		SET
+			self_introduction = #{self_introduction},
+			user_profile = #{user_profile}
+		WHERE
+			user_id = #{user_id}
+	</update>
 </mapper>

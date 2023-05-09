@@ -19,4 +19,6 @@ public interface MemberMapper {
 	List<PetDto> getPetListById(Long user_id);
 
 	int update(MemberDtoAddRole member);
+
+	int updateProfile(MemberDtoAddRole member);
 }

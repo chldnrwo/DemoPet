@@ -129,24 +129,31 @@ body {
 				    	
 				    </div>
 				</div>
-					
 					<br>
-					<c:if test="${member.user_profile ne null}">
-			        	<img style="max-width: 100%; max-height: 100%;"
-		            	src="${imgUrl }/mypage/${member.user_id}/${member.user_profile}">
+					<form action="" method="post" enctype="multipart/form-data">
+					<input hidden name="user_id" type="text" value="${member.user_id}"/>
+					<input hidden name="user_profile" type="text" value="${member.user_profile}"/>
+					<input multiple type="file" accept="image/*" class="form-control" name="file">
+					<br>
+					<c:if test="${member.self_introduction ne null}">
+					<textarea name="self_introduction" class="form-control" rows="5" style="min-height: 320px;">${member.self_introduction}</textarea>
 			        </c:if>
-					<textarea class="form-control" rows="5" style="min-height: 320px;" placeholder="자기소개를 입력해주세요."></textarea>
+			        <c:if test="${member.self_introduction eq null}">
+			        <textarea class="form-control" rows="5" style="min-height: 320px;" placeholder="자기소개를 입력해주세요."></textarea>
+			        </c:if>
+			        
 					<br>
 					<br>
 					<div class="d-flex justify-content-center mb-2">
+					<input id="reservation" type="submit" class="btn btn-outline-dark"
+						style="width: 130px;margin-right: 3rem;" value="수정 완료"
+						onclick="location.href='${path}/member/profile'"/>
+				
 					<button id="reservation" type="button" class="btn btn-outline-dark"
 						style="width: 130px;margin-right: 3rem;"
-						onclick="location.href='${path}/member/profile'">수정 완료</button>
-					<button id="reservation" type="button" class="btn btn-outline-dark"
-						style="width: 130px;margin-right: 3rem;"
-						onclick="location.href='${path}/member/mypage'">수정 취소</button>
+						onclick="location.href='${path}/member/mypage'">나가기</button>
 					</div>
-					
+					</form>
 					
 				
 				</div>
