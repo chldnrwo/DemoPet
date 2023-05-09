@@ -111,35 +111,42 @@ body {
 		<div class="row">
 			<div class="col-md-10">
 				<div class="mb-3">
-					<div class="container" style="border: 1px solid #d2d2d2;min-height: 320px;max-width:320px;">
-						<div class="container justify-content-center container-dotted" style="margin: 10px 0 10px 0;">
-							<div class="item">
-								<div style="padding: 60px 0px 0px 0px;">
-									<img style="width: 128px; height: 128px; border-radius: 100%;"
-									src="${imgUrl }/mypage/dog.jpg">
-								</div>
-								<div>
-									프로필 사진을 등록해주세요
-								</div>
-							</div>
-						</div>
-					</div>
+				<div class="container d-flex flex-column align-items-center" style="border: 1px solid #d2d2d2; min-height: 320px; max-width: 320px;">
+				    <div class="item d-flex flex-column justify-content-center" style="flex-grow: 1;">
+				        <c:if test="${member.user_profile eq null}">
+					        <div class="d-flex justify-content-center mb-2">
+					            <img style="width: 128px; height: 128px; border-radius: 100%;"
+					            src="${imgUrl }/mypage/ico_21.png">
+					        </div>
+					        <div class="text-center">
+					            프로필 사진을 등록해주세요
+					        </div>
+				        </c:if>
+				        <c:if test="${member.user_profile ne null}">
+					        <img style="max-width: 100%; max-height: 100%;"
+				            src="${imgUrl }/mypage/${member.user_id}/${member.user_profile}">
+				        </c:if>
+				    	
+				    </div>
+				</div>
 					
 					<br>
-				
-					<div class="container" style="border: 1px solid #d2d2d2; min-height: 320px;">
-						자기소개를 입력해주세요
-					</div>
+					<c:if test="${member.user_profile ne null}">
+			        	<img style="max-width: 100%; max-height: 100%;"
+		            	src="${imgUrl }/mypage/${member.user_id}/${member.user_profile}">
+			        </c:if>
+					<textarea class="form-control" rows="5" style="min-height: 320px;" placeholder="자기소개를 입력해주세요."></textarea>
 					<br>
 					<br>
-					<button id="reservation" type="button" class="btn btn-outline-dark"
-							style="width: 130px;margin-right: 3rem;"
-							onclick="location.href='${path}/member/profile'">프로필 등록</button>
+					<div class="d-flex justify-content-center mb-2">
 					<button id="reservation" type="button" class="btn btn-outline-dark"
 						style="width: 130px;margin-right: 3rem;"
-						onclick="location.href='${path}/member/update'">개인 정보 수정</button>
+						onclick="location.href='${path}/member/profile'">수정 완료</button>
 					<button id="reservation" type="button" class="btn btn-outline-dark"
-						style="width: 130px;">강아지 등록</button>
+						style="width: 130px;margin-right: 3rem;"
+						onclick="location.href='${path}/member/mypage'">수정 취소</button>
+					</div>
+					
 					
 				
 				</div>
@@ -221,12 +228,3 @@ body {
 	</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-

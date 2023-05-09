@@ -38,7 +38,9 @@ public class MemberController {
 			@AuthenticationPrincipal User user,
 			Model model
 			) {
-		
+		MemberDtoAddRole m = service.getByEmail(user.getUsername());
+		System.out.println(m);
+		model.addAttribute("member", m);
 	}
 	
 	@GetMapping("update")
