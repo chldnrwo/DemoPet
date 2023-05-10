@@ -23,4 +23,6 @@ public interface MemberMapper {
 	int updateProfile(MemberDtoAddRole member);
 
 	int insertPet(PetDto pet);
+
+	boolean isEnabled(String email);
 }

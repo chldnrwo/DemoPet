@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,10 +34,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		
 		MemberDtoAddRole member = mapper.selectByEmail(email);
-
 		if (member == null)	return null;
 		
-		if (!member.isEnabled()) {
+		boolean check = mapper.isEnabled(member.getEmail());
+		if (!check) {
             throw new DisabledException("This account has been disabled");
         }
 		

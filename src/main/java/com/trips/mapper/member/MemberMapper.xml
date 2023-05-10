@@ -105,4 +105,10 @@
 	INSERT INTO PET(user_id, name, birth, breed, neutering, pet_gender, size_type, pet_profile)
 	VALUES (#{user_id}, #{name}, #{birth}, #{breed}, #{neutering}, #{pet_gender}, #{size_type}, #{pet_profile})
 	</insert>
+	
+	<select id="isEnabled" parameterType="string" resultType="boolean">
+        SELECT disable
+        FROM USER
+        WHERE email = #{email}
+    </select>
 </mapper>

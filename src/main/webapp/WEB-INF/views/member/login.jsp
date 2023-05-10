@@ -100,6 +100,10 @@ body {
 									계정이 없으신가요? <a href="${path}/member/signup" id="signup">가입하기</a>
 								</p>
 							</div>
+							<c:if test="${sessionScope.errorMessage != null}">
+							    <div style="color: red;">${sessionScope.errorMessage}</div>
+							</c:if>
+							
 						</form>
 					</div>
 				</div>

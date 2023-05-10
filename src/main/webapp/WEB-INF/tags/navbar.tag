@@ -44,7 +44,7 @@ padding: 0 15px 0 15px;
 <c:url value="/offline/on" var="offLineLink" />
 <c:url value="/member/login" var="logInLink" />
 <c:url value="/member/signup" var="signUpLink" />
-<c:url value="/main" var="mainLink" />
+<c:url value="/main2" var="mainLink" />
 <c:url value="/member/logout" var="logOutLink" />
 
 <c:url value="/host/hostPage" var="hostPage" />

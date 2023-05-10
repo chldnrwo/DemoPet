@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.trips.security.CustomAuthenticationFailureHandler;
 
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
@@ -28,7 +29,11 @@ import software.amazon.awssdk.services.s3.S3Client;
 @MapperScan("com.trips.mapper")
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class CustomConfig {
+	
+	@Autowired
+	private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
+	
 	@Value("${aws.accessKeyId}")
 	private String accessKeyId;
 
@@ -61,12 +66,32 @@ public class CustomConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		
-		http.formLogin().loginPage("/member/login").defaultSuccessUrl("/main2", true);
-		
-		http.logout().logoutUrl("/member/logout");
-		http.csrf().disable();
-		// 접근권한 excepiton시 해당 경로로 리턴
-		http.exceptionHandling().accessDeniedPage("/member/accessDenied");
+//		http.formLogin().loginPage("/member/login")
+//			.failureHandler(customAuthenticationFailureHandler)
+//			.permitAll()
+//			.defaultSuccessUrl("/main2", true);
+//		
+//		http.logout().logoutUrl("/member/logout");
+//		http.csrf().disable();
+//		// 접근권한 excepiton시 해당 경로로 리턴
+//		http.exceptionHandling().accessDeniedPage("/member/accessDenied");
+//		return http.build();
+		http
+        .authorizeRequests()
+            .anyRequest().authenticated()
+        .and()
+        .formLogin()
+            .loginPage("/member/login")
+            .failureHandler(customAuthenticationFailureHandler)
+            .permitAll()
+            .defaultSuccessUrl("/main2", true)
+        .and()
+        .logout()
+            .logoutUrl("/member/logout")
+        .and()
+        .csrf().disable()
+        .exceptionHandling().accessDeniedPage("/member/accessDenied");
+
 		return http.build();
 	}
 	
