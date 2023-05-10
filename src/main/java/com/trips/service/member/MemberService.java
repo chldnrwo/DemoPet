@@ -108,12 +108,11 @@ public class MemberService {
 	}
 	
 	public int updateProfile(MemberDtoAddRole member, MultipartFile file, String legacyFileName) {
-		System.out.println(member.getUser_id());
 		if (file != null && file.getSize() > 0) {
 			member.setUser_profile(file.getOriginalFilename());
 			uploadFile(file, "moigae/mypage/"+member.getUser_id()+ "/");
+			deleteFile(member.getUser_id(), legacyFileName);
 		}
-		deleteFile(member.getUser_id(), legacyFileName);
 		return memberMapper.updateProfile(member);
 	}
 	
@@ -124,5 +123,13 @@ public class MemberService {
 				.key(key)
 				.build();
 		s3Client.deleteObject(deleteObjectRequest);
+	}
+
+	public int insertPet(PetDto pet, MultipartFile file) {
+		if (file != null && file.getSize() > 0) {
+			pet.setPet_profile(file.getOriginalFilename());
+			uploadFile(file, "moigae/mypage/"+pet.getUser_id()+ "/");
+		}
+		return memberMapper.insertPet(pet);
 	}
 }

@@ -139,7 +139,7 @@ body {
 					<textarea name="self_introduction" class="form-control" rows="5" style="min-height: 320px;">${member.self_introduction}</textarea>
 			        </c:if>
 			        <c:if test="${member.self_introduction eq null}">
-			        <textarea class="form-control" rows="5" style="min-height: 320px;" placeholder="자기소개를 입력해주세요."></textarea>
+			        <textarea name="self_introduction" class="form-control" rows="5" style="min-height: 320px;" placeholder="자기소개를 입력해주세요."></textarea>
 			        </c:if>
 			        
 					<br>

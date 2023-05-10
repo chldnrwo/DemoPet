@@ -156,12 +156,12 @@ body {
 					<c:if test="${empty pet}">
 						<div class="container" style="border: 1px solid #d2d2d2;min-height: 320px;">
 							<div class="container justify-content-center container-dotted" style="margin: 10px 0 10px 0;">
-								<div class="item">
-									<div style="padding: 60px 0px 0px 0px;">
+								<div class="item d-flex flex-column justify-content-center">
+									<div class="d-flex justify-content-center mb-2">
 										<img style="width: 128px; height: 128px; border-radius: 100%;"
 										src="${imgUrl }/mypage/dog.jpg">
 									</div>
-									<div>
+									<div class="text-center">
 										강아지 정보를 등록해주세요
 									</div>
 								</div>
@@ -219,7 +219,8 @@ body {
 						style="width: 130px;margin-right: 3rem;"
 						onclick="location.href='${path}/member/update'">개인 정보 수정</button>
 					<button id="reservation" type="button" class="btn btn-outline-dark"
-						style="width: 130px;">강아지 등록</button>
+						style="width: 130px;"
+						onclick="location.href='${path}/member/petProfile'">강아지 등록</button>
 					
 					<br><br>					
 					<button id="reservation" type="button" class="btn btn-outline-dark mr-3"

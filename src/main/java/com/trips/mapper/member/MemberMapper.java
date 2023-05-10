@@ -21,4 +21,6 @@ public interface MemberMapper {
 	int update(MemberDtoAddRole member);
 
 	int updateProfile(MemberDtoAddRole member);
+
+	int insertPet(PetDto pet);
 }

@@ -36,6 +36,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		if (member == null)	return null;
 		
+		if (!member.isEnabled()) {
+            throw new DisabledException("This account has been disabled");
+        }
+		
 		List<SimpleGrantedAuthority> list = new ArrayList<>();
 		if(member.getUser_role()!=null) {
 			list.add(new SimpleGrantedAuthority(member.getUser_role()));

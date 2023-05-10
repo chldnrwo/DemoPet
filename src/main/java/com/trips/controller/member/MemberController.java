@@ -34,6 +34,26 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 	
+	@PostMapping("petProfile")
+	public String signup(
+			PetDto pet,
+			MultipartFile file,
+			RedirectAttributes rttr
+			) {
+		
+		int cnt = service.insertPet(pet, file);
+		return "redirect:/member/mypage";
+	}
+	
+	@GetMapping("petProfile")
+	public void petProfile(
+			@AuthenticationPrincipal User user,
+			Model model
+			) {
+		MemberDtoAddRole m = service.getByEmail(user.getUsername());
+		model.addAttribute("member", m);
+	}
+	
 	@PostMapping("profile")
 	public String profile2(
 			MemberDtoAddRole member,
@@ -42,6 +62,7 @@ public class MemberController {
 			) {
 		//버킷에 있는 기존 이미지 삭제
 		//새로운 이미지 업데이트
+		System.out.println(member);
 		int cnt = service.updateProfile(member, file, member.getUser_profile());
 		return "redirect:/member/profile";
 	}
