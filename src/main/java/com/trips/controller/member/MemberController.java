@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -21,6 +22,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.youtube.YouTube;
+import com.google.api.services.youtube.model.SearchListResponse;
+import com.google.api.services.youtube.model.SearchResult;
 import com.trips.domain.member.MemberDto;
 import com.trips.domain.member.MemberDtoAddRole;
 import com.trips.domain.member.PetDto;
@@ -30,9 +38,53 @@ import com.trips.service.member.MemberService;
 @Controller
 @RequestMapping("member")
 public class MemberController {
-
+	
+	@Value("${gKey}")
+	private String API_KEY; // 발급받은 API 키를 입력하세요.
+	
+    private static final String SEARCH_KEYWORD = "강아지";
+	
 	@Autowired
 	private MemberService service;
+	
+	@GetMapping("lab")
+	public void lab() {
+		try {
+            HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+            JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+            
+            // YouTube 객체 생성
+            YouTube youtube = new YouTube.Builder(httpTransport, jsonFactory, null)
+                    .setApplicationName("youtube-search")
+                    .build();
+            
+            // 검색 요청 설정
+            YouTube.Search.List search = youtube.search().list("id,snippet");
+            search.setKey(API_KEY);
+            search.setQ(SEARCH_KEYWORD);
+            search.setType("video");
+            search.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/default/url)");
+            search.setMaxResults(10L);
+            search.setOrder("viewCount"); // 조회수 순으로 정렬
+            
+            // 검색 요청 실행 및 결과 가져오기
+            SearchListResponse searchResponse = search.execute();
+            List<SearchResult> searchResultList = searchResponse.getItems();
+            
+            // 검색 결과 출력
+            if (searchResultList != null) {
+                for (SearchResult result : searchResultList) {
+                    System.out.println("Title: " + result.getSnippet().getTitle());
+                    System.out.println("Video ID: " + result.getId().getVideoId());
+                    System.out.println("Thumbnail URL: " + result.getSnippet().getThumbnails().getDefault().getUrl());
+                    System.out.println("\n-------------------------------------------------------------\n");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 	
 	@PostMapping("petProfile")
 	public String signup(

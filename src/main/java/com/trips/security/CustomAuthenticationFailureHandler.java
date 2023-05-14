@@ -15,16 +15,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
+	
+	
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
             throws IOException, ServletException {
         
         setDefaultFailureUrl("/login?error=true");
         
-        System.out.println("Exception: " + exception.getClass());	
-        
         super.onAuthenticationFailure(request, response, exception);
-
+        
         String errorMessage = "Invalid";
        
         if (exception.getClass().isAssignableFrom(BadCredentialsException.class)) {

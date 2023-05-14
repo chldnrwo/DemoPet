@@ -45,8 +45,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 		if(member.getUser_role()!=null) {
 			list.add(new SimpleGrantedAuthority(member.getUser_role()));
 		}	
-		User user = new User(member.getEmail(), member.getPassword(),list);
-		System.out.println(user); 
+		User user = new User(member.getEmail(), member.getPassword(), list);
+		
 		return user;
 	}
 
