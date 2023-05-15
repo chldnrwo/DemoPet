@@ -101,6 +101,14 @@ body {
 
 	<my:navbar></my:navbar>
 	
+	<c:forEach var="video" items="${videos}">
+		<div>
+		    <h2><c:out value="${video.snippet.title}" /></h2>
+		    <iframe width="560" height="315" src="https://www.youtube.com/embed/${video.id.videoId}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		    <p><a href="https://www.youtube.com/watch?v=${video.id.videoId}">Watch on YouTube</a></p>
+		</div>
+	</c:forEach>
+
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"

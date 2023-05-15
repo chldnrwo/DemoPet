@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,6 +25,7 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.DateTime;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
@@ -48,7 +48,7 @@ public class MemberController {
 	private MemberService service;
 	
 	@GetMapping("lab")
-	public void lab() {
+	public void lab(Model model) {
 		try {
             HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
             JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
@@ -67,6 +67,17 @@ public class MemberController {
             search.setMaxResults(10L);
             search.setOrder("viewCount"); // 조회수 순으로 정렬
             
+            // Current time
+            long now = System.currentTimeMillis();
+            DateTime nowDateTime = new DateTime(now);
+
+            // One week ago
+            long oneWeekAgo = now - (7 * 24 * 60 * 60 * 1000);
+            DateTime oneWeekAgoDateTime = new DateTime(oneWeekAgo);
+
+            search.setPublishedAfter(oneWeekAgoDateTime);
+            search.setPublishedBefore(nowDateTime);
+            
             // 검색 요청 실행 및 결과 가져오기
             SearchListResponse searchResponse = search.execute();
             List<SearchResult> searchResultList = searchResponse.getItems();
@@ -80,6 +91,7 @@ public class MemberController {
                     System.out.println("\n-------------------------------------------------------------\n");
                 }
             }
+            model.addAttribute("videos", searchResultList);
         } catch (Exception e) {
             e.printStackTrace();
         }
